@@ -47,16 +47,21 @@ with open('model_nb.pkl', 'wb') as model_file:
 # Загрузка обученной модели из файла
 with open('model_nb.pkl', 'rb') as model_file:
     model_nb_loaded = pickle.load(model_file)
-
 for i in range(data.shape[0]):
-    # Пример использования загруженной модели
-    new_question = data["question"][i]
-    print(new_question)
-    new_question_processed = preprocess_text(new_question, stemmer, stop_words)
-    new_question_count = vectorizer.transform([new_question_processed])
-    predicted_answer = model_nb_loaded.predict(new_question_count)
-    print(f"Predicted answer: {predicted_answer}")
-    # Оценка качества модели на тестовом наборе
-    y_pred_test = model_nb_loaded.predict(X_test)
-    accuracy = accuracy_score(y_test, y_pred_test)
-    print(f"Accuracy of the model: {accuracy}")
+    def question(questions):
+        # Пример использования загруженной модели
+        new_question = questions
+        print(new_question)
+
+        new_question_processed = preprocess_text(new_question, stemmer, stop_words)
+        new_question_count = vectorizer.transform([new_question_processed])
+        predicted_answer = model_nb_loaded.predict(new_question_count)
+        if questions == predicted_answer :
+            print(f"Правильный ответ: {predicted_answer}")
+
+            # Оценка качества модели на тестовом наборе
+            y_pred_test = model_nb_loaded.predict(X_test)
+            accuracy = accuracy_score(y_test, y_pred_test)
+            print(f"Accuracy of the model: {accuracy}")
+
+    question(input("вопрос : " + str(data['question'][i])))
